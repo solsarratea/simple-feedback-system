@@ -94,7 +94,7 @@ function initMainScene(){
       vertexShader: document.getElementById( 'vertex' ).innerHTML,
       fragmentShader: document.getElementById( 'frag' ).innerHTML
 });
-    finalMaterial =  new THREE.MeshBasicMaterial({ map: ping.texture });
+    finalMaterial =  new THREE.MeshBasicMaterial({ map: ping });
     geom = new THREE.PlaneBufferGeometry( 2, 2);
     quad = new THREE.Mesh( geom, material );
     quad.material.side = THREE.DoubleSide;
@@ -105,38 +105,55 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+// function render() {
+//     quad.material.uniforms.time.value = clock.getElapsedTime();
+//     if(renderer.info.render.frame %1 == 0.){
+//         for (var i = 0; i < 1; i++) {
+//             // Save buffer current frame to ping
+//             renderer.setRenderTarget(ping);
+//             renderer.render(bufferScene, camera);
+//             renderer.setRenderTarget(null);
+//             renderer.clear();
+
+//             //Swap ping and pong
+//             let temp = pong;
+//             pong = ping;
+//             ping = temp;
+
+//         }
+
+//     // Update channels
+//     quad.material.map = ping;
+//     bufferMaterial.uniforms.channel0.value = pong;
+
+//    }
+//     //Render Main Scene
+//     renderer.render(scene, camera);
+// }
+
 function render() {
     quad.material.uniforms.time.value = clock.getElapsedTime();
-    if(renderer.info.render.frame %4 == 0.){
-    // Save current frame to pong
-    renderer.setRenderTarget(pong);
-    renderer.render(scene, camera);
-    renderer.setRenderTarget(null);
-    renderer.clear();
+    if(renderer.info.render.frame %1 == 0.){
+        for (var i = 0; i < 1; i++) {
+            // Save buffer current frame to ping
+            renderer.setRenderTarget(pong);
+            renderer.render(scene, camera);
+            renderer.setRenderTarget(null);
+            renderer.clear();
 
-    // Save buffer current frame to ping
-    renderer.setRenderTarget(ping);
-    renderer.render(bufferScene, camera);
-    renderer.setRenderTarget(null);
-    renderer.clear();
+            // Save buffer current frame to ping
+            renderer.setRenderTarget(ping);
+            renderer.render(bufferScene, camera);
+            renderer.setRenderTarget(null);
+            renderer.clear();
 
-    // Save current frame to pong
-        renderer.setRenderTarget(pong);
-        renderer.render(scene, camera);
-        renderer.setRenderTarget(null);
-        renderer.clear();
+        }
 
-        // Save buffer current frame to ping
-        renderer.setRenderTarget(ping);
-        renderer.render(bufferScene, camera);
-        renderer.setRenderTarget(null);
-        renderer.clear();
+        // Update channels
+        quad.material.uniforms.backbuffer.value = ping;
+        bufferMaterial.uniforms.channel0.value = pong;
 
-    // Update channels
-    quad.material.uniforms.backbuffer.value = ping;
-    bufferMaterial.uniforms.channel0.value = pong;
-
-   }
+    }
     //Render Main Scene
     renderer.render(scene, camera);
 }

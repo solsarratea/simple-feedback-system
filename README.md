@@ -12,4 +12,4 @@ In the shaders folder, there are some fragment shader's example you can copy and
 
 ![](/heart.gif)
 
-Feel free to cantact me if you want to add yours!
+Feel free to send PR if you want to add yours!
